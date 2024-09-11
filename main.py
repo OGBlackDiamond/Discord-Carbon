@@ -2,16 +2,13 @@ import discord
 import os
 from discord.ext import commands
 from discord.message import Message
-from discord import app_commands
 
 from util.config_util import ConfigUtil
 
 intents = discord.Intents.default()
 intents.message_content = True;
 
-client = commands.Bot(command_prefix="<>", intents=intents)
-
-tree = app_commands.CommandTree(client)
+client = commands.Bot(command_prefix=".", intents=intents)
 
 config = ConfigUtil()
 
@@ -22,7 +19,7 @@ async def slash_command(interaction: discord.Interaction):
 @client.event
 async def on_ready():
     print(f"Logged in as {client.user}")
-    await tree.sync()
+    await client.tree.sync()
     print("Synced the command tree!")
 
 @client.event
@@ -32,13 +29,12 @@ async def on_message(message: Message):
     if message.author == client.user:
         return
 
-    await client.process_commands(message)
-
     if message.content.startswith("echo"):
         await message.channel.send(message.content[5:])
 
 bot_token = config.get_config().get("bot_token")
 if bot_token == None:
     print("No bot token found!")
-    quit() 
+    quit()
 client.run(bot_token)
+
