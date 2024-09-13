@@ -1,3 +1,6 @@
 {
-    "bot_token": "discord bot key here"
+    "bot_token": "your bot token goes here",
+    "email_role": "the role to ping when you want to send an email's ID",
+    "email_recipients": ["a list of people to", "recieve the emails"],
+    "email_server_list": [-1]
 }

@@ -18,7 +18,6 @@ class GmailUtil:
     def __init__(self):
         SCOPES = ["https://www.googleapis.com/auth/gmail.modify"]
 
-
         creds = None
 
         if os.path.exists("token.json"):
@@ -27,46 +26,44 @@ class GmailUtil:
         if not creds or not creds.valid:
             if creds and creds.expired and creds.refresh_token:
                 creds.refresh(Request())
-        else:
-            flow = InstalledAppFlow.from_client_secrets_file(
-                "credentials.json", SCOPES
-            )
-            creds = flow.run_local_server(port=0)
+            else:
+                flow = InstalledAppFlow.from_client_secrets_file(
+                    "credentials.json", SCOPES
+                )
+                creds = flow.run_local_server(port=0)
             # Save the credentials for the next run
             with open("token.json", "w") as token:
                 token.write(creds.to_json())
+
 
         # build the service with credentials
         self.service = build("gmail", "v1", credentials=creds)
         
 
 
-    def send_message(self):
+    def send_message(self, recipient: str, user: str, content: str):
 
         try:
 
             message = EmailMessage()
 
-            message.set_content("This is a test email.")
+            message.set_content(f"Message from Discord by: {user}\n\n{content}\n\n\n\n\n-# Automated messaging from Discord handled by Carbon")
 
-            message["To"] = "caden.feller@gmail.com"
+            message["To"] = recipient
             message["From"] = "fyre5480@gmail.com"
-            message["Subject"] = "Testing Carbon Email"
+            message["Subject"] = "Testing Carbon Discord-to-Email System"
 
             # encoded message
             encoded_message = base64.urlsafe_b64encode(message.as_bytes()).decode()
 
-            create_message = {"message": {"raw": encoded_message}}
+            create_message = {"raw": encoded_message}
             # pylint: disable=E1101
             draft = (
                 self.service.users()
-                .drafts()
+                .messages()
                 .send(userId="me", body=create_message)
                 .execute()
             )
-
-            print(f'Draft id: {draft["id"]}\nDraft message: {draft["message"]}')
-
 
         except HttpError as error:
             print(f"An error occurred: {error}")
