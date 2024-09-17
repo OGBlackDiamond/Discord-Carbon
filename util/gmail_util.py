@@ -54,7 +54,7 @@ class GmailUtil:
 
             message["To"] = recipient
             message["From"] = "fyre5480@gmail.com"
-            message["Subject"] = "Testing Carbon Discord-to-Email System"
+            message["Subject"] = f"Message from Discord by {user}"
 
 
             # encoded message
