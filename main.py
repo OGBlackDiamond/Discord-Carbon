@@ -66,9 +66,13 @@ async def on_message(message: Message):
             await message.channel.send("This server is not authorized to send email notifications!")
             return
 
+        name = message.author.nick
+        if name == None:
+            name = message.author.name
+
         await message.channel.send("Talking to Email api...")
         for recipient in config.get_config().get("email_recipients"): #type: ignore
-            mail = gmail_util.send_message(recipient, message.author.nick, message.content[start_index:]) #type: ignore
+            mail = gmail_util.send_message(recipient, name, message.content[start_index:]) #type: ignore
             if mail == None:
                 await message.channel.send(content="Message failed to send!")
             else:

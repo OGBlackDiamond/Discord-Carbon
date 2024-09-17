@@ -47,11 +47,15 @@ class GmailUtil:
 
             message = EmailMessage()
 
+            # removes extranious newline characters
+            content.replace('\n', '')
+
             message.set_content(f"Message from Discord by: {user}\n\n{content}\n\n\n\n\n-# Automated messaging from Discord handled by Carbon")
 
             message["To"] = recipient
             message["From"] = "fyre5480@gmail.com"
             message["Subject"] = "Testing Carbon Discord-to-Email System"
+
 
             # encoded message
             encoded_message = base64.urlsafe_b64encode(message.as_bytes()).decode()
