@@ -14,7 +14,7 @@ client = commands.Bot(command_prefix=".", intents=intents)
 start_time = time.time()
 
 config = ConfigUtil()
-gmail_util = GmailUtil()
+gmail_util = GmailUtil(config.get_config()["from"], config.get_config()["password"])
 
 @client.tree.command(name='info', description="Sends a message containing all of the info about this bot.")
 async def info(interaction: discord.Interaction):
@@ -72,12 +72,8 @@ async def on_message(message: Message):
 
         await message.channel.send("Talking to Email api...")
         for recipient in config.get_config().get("email_recipients"): #type: ignore
-            mail = gmail_util.send_message(recipient, name, message.content[start_index:]) #type: ignore
-            if mail == None:
-                await message.channel.send(content="Message failed to send!")
-            else:
-                await message.channel.send(content="Successfully sent message!") 
-
+            gmail_util.send_message(recipient, name, message.content[start_index:]) #type: ignore
+            await message.channel.send(content="Message failed to send!")
             return
 
 

@@ -9,16 +9,11 @@ class GmailUtil:
 
     user: str
     password: str
-    to: str
 
-    def __init__(self):
-        with open("config.json", "r") as file:
-            config = json.loads(file.read())
+    def __init__(self, user: str, password: str):
+        self.user = user
+        self.password = password
 
-            self.user = config["from"]
-            self.password = config["password"]
-            self.to = config["to"]
-    
     def send_message(self, recipient: str, user: str, content: str):
         # Create a MIMEText object with the body of the email.
         msg = MIMEText(content)
