@@ -2,5 +2,7 @@
     "bot_token": "your bot token goes here",
     "email_role": "the role to ping when you want to send an email's ID",
     "email_recipients": ["a list of people to", "recieve the emails"],
-    "email_server_list": [-1]
+    "email_server_list": [-1],
+    "from": "the email from which to send messages",
+    "password": "the app password of that email"
 }
